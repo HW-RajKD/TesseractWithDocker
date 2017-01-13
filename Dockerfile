@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 ADD . /usr/src/app
 #RUN mvn clean install -Dtest=TestWebService
 RUN cd /usr/local/OcrTiffTesseractWebservice && mvn clean install -Dtest=TestWebService
-RUN /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war /usr/share/
+RUN sudo /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war /usr/share/
 
 FROM tomcat:8.0-jre8
 MAINTAINER "RAJ KUMAR DUBEY" (rajkumar.dubey@heavywater.solutions)
