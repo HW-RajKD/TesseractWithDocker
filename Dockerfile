@@ -77,4 +77,4 @@ RUN cp /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.w
 # Forward HTTP ports
 EXPOSE 80 8080
 
-CMD ["/sbin/my_init"]
+CMD ["catalina.sh", "run"]
