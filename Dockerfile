@@ -49,6 +49,7 @@ ADD run.sh /etc/service/tomcat/run
 RUN chmod +x /*.sh
 RUN chmod +x /etc/service/tomcat/run
 
+RUN ls /usr/local/
 # Step-6 : Install Git
 RUN apt-get update && apt-get install -y git
 
@@ -71,7 +72,7 @@ RUN cd /usr/local/OcrTiffTesseractWebservice && $MAVEN_HOME/bin/mvn clean instal
 
 # Step-10 : Deploy the war in tomcat
 RUN rm -rf ${CATALINA_HOME}/webapps/*
-RUN cp /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war $CATALINA_HOME/apache-tomcat-${TOMCAT_MINOR_VERSION}/webapps/
+RUN cp /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war $CATALINA_HOME/webapps/
 
 # Forward HTTP ports
 EXPOSE 80 8080
