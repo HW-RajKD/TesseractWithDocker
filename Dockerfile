@@ -30,7 +30,7 @@ RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> ~/.bashrc
 # Step-5(a) : Install Tomcat
 ENV TOMCAT_MAJOR_VERSION 8
 ENV TOMCAT_MINOR_VERSION 8.0.23
-ENV CATALINA_HOME /tomcat
+ENV CATALINA_HOME /usr/local/tomcat
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends wget pwgen ca-certificates && \
     apt-get clean && \
@@ -40,7 +40,7 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION
 	wget -qO- https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz.md5 | md5sum -c - && \
 	tar zxf apache-tomcat-*.tar.gz && \
  	rm apache-tomcat-*.tar.gz && \
- 	mv apache-tomcat* tomcat
+ 	mv apache-tomcat* $CATALINA_HOME
 	
 # Step-5(b) : Create Tomcat admin user	
 ADD create_tomcat_admin_user.sh /create_tomcat_admin_user.sh
@@ -62,17 +62,16 @@ RUN mkdir -p /usr/share/maven \
 
 ENV MAVEN_HOME /usr/share/maven
 VOLUME /root/.m2
-CMD ["mvn"] 
 
 # Step-8 : Get the project from github
 RUN cd /usr/local && git clone https://github.com/HW-RajKD/OcrTiffTesseractWebservice.git
 
 # Step-9 : Build the project
-RUN cd /usr/local/OcrTiffTesseractWebservice && /usr/local/maven/bin/mvn -Dtest=TestWebService
+RUN cd /usr/local/OcrTiffTesseractWebservice && $MAVEN_HOME/bin/mvn clean install -Dtest=TestWebService
 
 # Step-10 : Deploy the war in tomcat
 RUN rm -rf ${CATALINA_HOME}/webapps/*
-RUN cp /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war /usr/local/tomcat/apache-tomcat-${TOMCAT_MINOR_VERSION}/webapps/
+RUN cp /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war $CATALINA_HOME/apache-tomcat-${TOMCAT_MINOR_VERSION}/webapps/
 
 # Forward HTTP ports
 EXPOSE 80 8080
