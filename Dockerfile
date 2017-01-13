@@ -10,4 +10,4 @@ ADD . /usr/src/app
 RUN cd /usr/local/OcrTiffTesseractWebservice && mvn clean install -Dtest=TestWebService
 FROM tomcat:8.0-jre8
 MAINTAINER "RAJ KUMAR DUBEY" (rajkumar.dubey@heavywater.solutions)
-ADD /usr/local/OcrTiffTesseractWebservice/target/*.war /usr/local/tomcat/webapps/
+# ADD /usr/local/OcrTiffTesseractWebservice/target/OcrTiffTesseractWebservice.war /usr/local/tomcat/webapps/
